@@ -37,37 +37,16 @@ class HiFragment : Fragment(R.layout.hifragment) {
                 val database = SleepDatabase.getDatabase(requireContext())
                 val sleepDao = database.sleepDao()
 
-                // Log before executing getAvgDuration query
-                Log.d("HiFragment", "Before executing getAvgDuration query")
+
 
                 sleepDao.getAllEntries().collect { listOfEntries ->
                     adapter.sleepDataList =
-                        listOfEntries.map { SleepData(it.date, it.duration, it.quality) }.toMutableList()
+                        listOfEntries.map { SleepData(it.date, it.duration, it.quality) }
+                            .toMutableList()
                     adapter.notifyDataSetChanged()
-                }cd Hek
-
-                // Log after executing getAvgDuration query
-                val avgDuration = sleepDao.getAvgDuration()
-                Log.d("HiFragment", "After executing getAvgDuration query. Average Duration: $avgDuration")
-
-                // Launch a coroutine to update the average sleep duration
-                withContext(Dispatchers.Main) {
-                    // Log before updating the UI
-                    Log.d("HiFragment", "Before updating UI with average duration")
-
-                    updateAvgDuration(avgDuration)
-
-                    // Log after updating the UI
-                    Log.d("HiFragment", "After updating UI with average duration")
                 }
+
             }
         }
-    }
-
-    // Function to update the average sleep duration in textView2
-    private fun updateAvgDuration(avgDuration: Double) {
-        Log.d("HiFragment", "Received average duration: $avgDuration")
-        val textView2: TextView = requireView().findViewById(R.id.textView2)
-        textView2.text = "Average Sleep Duration: $avgDuration hours"
     }
 }

@@ -4,16 +4,16 @@
 
     <item
         android:id="@+id/Hellofrag"
-        android:icon="@drawable/baseline_calendar_today_24"
-        android:title="Hello"
+        android:icon="@drawable/baseline_bed_24"
+        android:title="Input"
 
         />
 
 
     <item
         android:id="@+id/Hifrag"
-        android:icon="@drawable/baseline_calendar_today_24"
-        android:title="Hi"
+        android:icon="@drawable/baseline_bedtime_24"
+        android:title="Summary"
 
         />
 </menu>

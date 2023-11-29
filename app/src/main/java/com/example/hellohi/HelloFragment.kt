@@ -2,11 +2,10 @@ package com.example.hellohi
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,18 +22,26 @@ class HelloFragment : Fragment(R.layout.activity_sleep_tracking) {
         val database = SleepDatabase.getDatabase(requireContext())
         val sleepDao = database.sleepDao()
 
-        val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
-        val adapter = SleepDataAdapter(emptyList())
+        // Placeholder for RecyclerView
+        val placeholder: FrameLayout? = view.findViewById(R.id.placeholder)
 
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        if (placeholder != null) {
+            val recyclerView = RecyclerView(requireContext())
+            val adapter = SleepDataAdapter(emptyList())
 
-        lifecycleScope.launch {
-            sleepDao.getAllEntries().collect { listOfEntries ->
-                adapter.sleepDataList =
-                    listOfEntries.map { SleepData(it.date, it.duration, it.quality) }.toMutableList()
-                adapter.notifyDataSetChanged()
+            placeholder.addView(recyclerView)
+            recyclerView.adapter = adapter
+            recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+            lifecycleScope.launch {
+                sleepDao.getAllEntries().collect { listOfEntries ->
+                    adapter.sleepDataList =
+                        listOfEntries.map { SleepData(it.date, it.duration, it.quality) }.toMutableList()
+                    adapter.notifyDataSetChanged()
+                }
             }
+        } else {
+            Log.e("HelloFragment", "Placeholder not found in layout")
         }
 
         val button: Button = view.findViewById(R.id.button)
